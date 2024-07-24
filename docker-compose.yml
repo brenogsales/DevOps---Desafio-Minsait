@@ -1,0 +1,32 @@
+# Define a versão do Docker Compose.
+version: '3.7'
+
+services:
+  wordpress:
+    build: .                                      # Constrói a imagem a partir do arquivo Dockerfile no diretório atual.
+    restart: always                               # Reinicia o container automaticamente se ele parar.
+    ports:
+      - 80:80                                     # Expõe a porta 80 do container para a porta 80 do host.
+    environment:                                  # Define variáveis de ambiente.
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress-db
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: GAud4mZby8F3SD6P
+    volumes:                                      # Configura volumes para garantir a persistência dos dados.
+      - wordpress_data:/var/www/html
+
+  db:
+    image: mysql:5.7                              # Utiliza a imagem do MySQL versão 5.7.
+    restart: always                               # Reinicia o container automaticamente se ele parar.
+    ports:
+      - 3306:3306                                 # Expõe a porta 3306 do container para a porta 3306 do host.
+    environment:                                  # Define variáveis de ambiente.
+      MYSQL_ROOT_PASSWORD: GAud4mZby8F3SD6P
+      MYSQL_DATABASE: wordpress-db
+    volumes:                                      # Configura volumes para garantir a persistência dos dados.
+      - db_data:/var/lib/mysql
+
+# Define os volumes para persistência de dados.
+volumes:
+  wordpress_data:
+  db_data:
